@@ -6,7 +6,6 @@ function getInputValue(inputId) {
     return getInputAmount;
 }
 
-
 document.getElementById('calculate-btn').addEventListener('click', function () {
     //Total Income
     /* const totalIncome = document.getElementById('total-income')
@@ -33,6 +32,27 @@ document.getElementById('calculate-btn').addEventListener('click', function () {
     const clothesCostAmount = parseFloat(clothesCostText);
     console.log(clothesCostAmount); */
     const clothesCost = getInputValue('clothes-cost');
+
+    // total Cost add
+    const totalCost = foodCost + rentCost + clothesCost
+    // console.log(totalCost);
+
+    // Total Expenses
+    const TotalExpensesInput = document.getElementById('total-expenses')
+    const totalExpensesText = TotalExpensesInput.innerText;
+    const totalExpensesPreviousAmount = parseFloat(totalExpensesText);
+    const totalExpensesUpdateAmount = totalExpensesPreviousAmount + totalCost;
+    TotalExpensesInput.innerText = totalExpensesUpdateAmount;
+
+    //balance Calculation
+    const Balance = totalIncome - totalCost;
+
+    //balance
+    const totalBalance = document.getElementById('balance')
+    const totalBalanceText = totalBalance.innerText;
+    const totalPreviousBalance = parseFloat(totalBalanceText);
+    const totalUpdateBalance = totalPreviousBalance + Balance;
+    totalBalance.innerText = totalUpdateBalance;
 
 
 })
