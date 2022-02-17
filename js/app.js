@@ -1,108 +1,93 @@
+// Getting All Element By id
+const error = document.getElementById("error-message");
 
-//Get input value
-function getInputValue(inputId) {
-    const getInput = document.getElementById(inputId);
-    const getInputText = getInput.value;
-    const getInputAmount = parseFloat(getInputText);
-    return getInputAmount;
+const totalIncome = document.getElementById("total-income");
+const foodCost = document.getElementById("food-cost");
+const rentCost = document.getElementById("rent-cost");
+const clothesCost = document.getElementById("clothes-cost");
+
+const totalExpense = document.getElementById("total-expenses");
+
+const balance = document.getElementById("balance");
+const savingPercentage = document.getElementById("saving-Percentage");
+const savingAmount = document.getElementById("saving-amount");
+const remaningBalance = document.getElementById("remaning-balance");
+
+// Only ASCII character in that range allowed
+function onlyNumberKey(evt) {
+    var ASCIICode = evt.which ? evt.which : evt.keyCode;
+    if (ASCIICode > 31 && (ASCIICode < 48 || ASCIICode > 57)) return false;
+    return true;
 }
-// Total Cost
-function totalExpenses() {
-    const foodCost = getInputValue('food-cost');
-    const rentCost = getInputValue('rent-cost');
-    const clothesCost = getInputValue('clothes-cost');
-    const totalCost = foodCost + rentCost + clothesCost
-    return totalCost;
+// Hiding Error Message From html
+function hideError() {
+    error.innerText = "";
+    error.style.display = "none";
 }
-// function getTotalIncome() {
-//     const totalIncome = getInputValue('total-income');
-//     return totalIncome;
-// }
-// function getBalance() {
-//     const balance = getTotalIncome - totalExpenses();
-//     return balance;
-// }
+// Showing Error Message From html
+function showError(msg) {
+    error.innerText = "Warning: " + msg;
+    error.style.display = "block";
+}
+// Cheking input Field
+function getValue(id) {
+    let value;
+    try {
+        value = parseFloat(id.value);
+    } catch (err) {
+        showError("Non-number input are not allowed");
+    }
 
-document.getElementById('calculate-btn').addEventListener('click', function () {
-    console.log("hi");
-    //Total Income
-    /* const totalIncome = document.getElementById('total-income')
-    const totalIncomeText = totalIncome.value;
-    const totalIncomeAmount = parseFloat(totalIncomeText)
-    console.log(totalIncomeAmount); */
-    const totalIncome = getInputValue('total-income');
+    if (value >= 0) return value;
+    else {
+        showError("Negative number are not allowed");
+    }
+}
+//Calculating Total Expense
+function calcTotalExpense() {
+    return getValue(foodCost) + getValue(rentCost) + getValue(clothesCost);
+}
+// Get balance 
+function calcBalence(income, expence) {
+    return income - expence;
+}
+//Clearing Outputs
+function clear() {
+    totalExpense.innerText = "0";
+    balance.innerText = "0";
+    savingAmount.innerText = "0";
+    remaningBalance.innerText = "0";
+}
+//Handaling calculate button
+document.getElementById("calculate-btn").addEventListener("click", function () {
+    hideError();
+    clear();
+    const income = getValue(totalIncome);
+    const expence = calcTotalExpense();
 
-    //food cost
-    /* const foodCost = document.getElementById('food-cost');
-    const foodCostText = foodCost.value;
-    const foodCostAmount = parseFloat(foodCostText);
-    console.log(foodCostAmount); */
-    // const foodCost = getInputValue('food-cost');
-    // //Rent cost
-    // /* const rentCost = document.getElementById('rent-cost');
-    // const rentCostText = rentCost.value;
-    // const rentCostAmount = parseFloat(rentCostText);
-    // console.log(rentCostAmount); */
-    // const rentCost = getInputValue('rent-cost');
-    // // Clothes cost
-    // /* const clothesCost = document.getElementById('clothes-cost');
-    // const clothesCostText = clothesCost.value;
-    // const clothesCostAmount = parseFloat(clothesCostText);
-    // console.log(clothesCostAmount); */
-    // const clothesCost = getInputValue('clothes-cost');
+    if (expence > income) {
+        showError("Your expense can not excced your income!");
+    } else {
+        const currentBalance = calcBalence(income, expence);
 
-    // // total Cost add
-    // const totalCost = foodCost + rentCost + clothesCost
-    // console.log(totalCost);
+        balance.innerText = currentBalance;
+        totalExpense.innerText = expence;
+    }
+});
+//Handaling Save button
+document.getElementById("saving-btn").addEventListener("click", function () {
+    hideError();
 
-    // Total Expenses
-    const TotalExpensesInput = document.getElementById('total-expenses')
-    // const totalExpensesText = TotalExpensesInput.innerText;
-    // const totalExpensesPreviousAmount = parseFloat(totalExpensesText);
-    // const totalExpensesUpdateAmount = totalExpensesPreviousAmount + totalCost;
-    TotalExpensesInput.innerText = totalExpenses();
-
-    //balance Calculation
-    const Balance = totalIncome - totalExpenses();
-
-    //balance
-    const totalBalance = document.getElementById('balance')
-    // const totalBalanceText = totalBalance.innerText;
-    // const totalPreviousBalance = parseFloat(totalBalanceText);
-    // const totalUpdateBalance = totalPreviousBalance + Balance;
-    totalBalance.innerText = Balance;
-
-
-})
-document.getElementById('saving-btn').addEventListener('click', function () {
-
-    // pore dlt kore dibo
-    // const totalIncome1 = getInputValue('total-income');
-    const totalIncome1 = getInputValue('total-income');
-    /////////////////////////////////////////
-
-
-    // Saving Percentage
-    const getSavingPercentage = getInputValue('saving-Percentage')
-    const getSavingAmount = (totalIncome1 * getSavingPercentage) / 100;
-    // console.log(getSavingAmount);
-    //saving amount display
-    const savingAmount = document.getElementById('saving-amount');
-    // const savingAmountText = savingAmount.innerText;
-    // const savingPreviousAmount = parseFloat(savingAmountText);
-    // const totalUpdateBalance = savingPreviousAmount + savingCalculation;
-    savingAmount.innerText = getSavingAmount;
-
-    // Remaning Balance 
-    // [aikhaner last part ta akto pblm ace uporer function er value needed]
-
-    // pore dlt kore dibo
-    const totalIncome = getInputValue('total-income');
-    const Balance1 = totalIncome - totalExpenses();
-    /////////////////////////////////////////
-
-    const remaningBalance = document.getElementById('remaning-balance');
-    const getRemaningBalance = Balance1 - getSavingAmount;
-    remaningBalance.innerText = getRemaningBalance;
-
-})
+    const income = getValue(totalIncome);
+    const expence = calcTotalExpense();
+    const currentBalance = calcBalence(income, expence);
+    const percentage = getValue(savingPercentage);
+    const sAmount = (income * percentage) / 100;
+    const rBalance = currentBalance - sAmount;
+    if (sAmount > currentBalance) {
+        showError("Your saving amount can not excced your current balence!");
+    } else {
+        savingAmount.innerText = sAmount;
+        remaningBalance.innerText = rBalance;
+    }
+});
